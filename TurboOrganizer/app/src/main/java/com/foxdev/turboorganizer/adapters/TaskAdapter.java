@@ -1,8 +1,10 @@
 package com.foxdev.turboorganizer.adapters;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
@@ -104,10 +106,14 @@ public final class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskView
             _binding.executePendingBindings();
 
             if (task.taskCompleted != 0) {
+                TextView taskName = _binding
+                        .getRoot().findViewById(R.id.task_name_box);
+
+                taskName.setPaintFlags(taskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
                 ((Button)_binding.getRoot()
                         .findViewById(R.id.complete_task_button))
                         .setText("Не выполнена");
-
             }
 
             _binding.getRoot()

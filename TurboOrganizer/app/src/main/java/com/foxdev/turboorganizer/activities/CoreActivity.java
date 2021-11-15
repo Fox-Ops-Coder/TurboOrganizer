@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.foxdev.turboorganizer.R;
 import com.foxdev.turboorganizer.fragments.CalendarFragment;
@@ -15,6 +16,8 @@ import com.foxdev.turboorganizer.fragments.TaskManageFragment;
 import com.foxdev.turboorganizer.objects.Task;
 import com.foxdev.turboorganizer.viewmodel.AppViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Calendar;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -29,13 +32,24 @@ public final class CoreActivity extends AppCompatActivity {
 
     private boolean _isTranzition;
 
+    private static final int hideSystemUIValue = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            | View.SYSTEM_UI_FLAG_FULLSCREEN;
+
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
 
+        Calendar calendar = Calendar.getInstance();
+
+        _year = calendar.get(Calendar.YEAR);
+        _month = calendar.get(Calendar.MONTH);
+        _day = calendar.get(Calendar.DAY_OF_MONTH);
+
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, new CalendarFragment())
+                .add(R.id.fragment_container, CalendarFragment
+                        .NewInstance(_year, _month, _day))
                 .commit();
 
         _appViewModel = new ViewModelProvider(this)
@@ -75,7 +89,8 @@ public final class CoreActivity extends AppCompatActivity {
 
                     case R.id.calendar_menu_nav:
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container, new CalendarFragment())
+                                .replace(R.id.fragment_container, CalendarFragment
+                                        .NewInstance(_year, _month, _day))
                                 .commit();
                         break;
 
@@ -92,6 +107,8 @@ public final class CoreActivity extends AppCompatActivity {
 
             return true;
         });
+
+        getWindow().getDecorView().setSystemUiVisibility(hideSystemUIValue);
     }
 
     public void SwitchToDay(int year, int month, int day) {

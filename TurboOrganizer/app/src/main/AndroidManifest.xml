@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/organize"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/organize"
         android:supportsRtl="true"
         android:name=".core.OrganizerApp"
         android:theme="@style/Theme.TurboOrganizer"
